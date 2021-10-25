@@ -1,0 +1,1 @@
+# shop-manager-app-django
