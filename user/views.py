@@ -1,3 +1,91 @@
-from django.shortcuts import render
+from django.contrib.auth.hashers import make_password
+from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404
+from rest_framework import status
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+
+from .models import CustomerUser
+from .serializers import UserSerializer, UserInformationSerializer
+
 
 # Create your views here.
+
+class UserRegisterAPIView(APIView):
+
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.validated_data['password'] = make_password(serializer.validated_data['password'])
+            user = serializer.save()
+
+            return JsonResponse({
+                'message': 'Register successful!'
+            }, status=status.HTTP_201_CREATED)
+
+        else:
+            return JsonResponse({
+                'error_message': 'This user has already exist!',
+                'errors_code': 400,
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserInformationAPIView(APIView):
+
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request):
+        return JsonResponse({
+            "msg": "succeed"
+        }, status=status.HTTP_200_OK)
+
+class ListCreateUserAPIView(ListCreateAPIView):
+    model = CustomerUser
+    serializer_class = UserInformationSerializer
+
+    def get_queryset(self):
+        return CustomerUser.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        serializer = UserInformationSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.validated_data['password'] = make_password(serializer.validated_data['password'])
+            serializer.save()
+
+            return JsonResponse({
+                'message': 'Create a new User successful!'
+            }, status=status.HTTP_201_CREATED)
+
+        return JsonResponse({
+            'message': 'Create a new User unsuccessful!'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+class UpdateDeleteUserView(RetrieveUpdateDestroyAPIView):
+    model = CustomerUser
+    serializer_class = UserInformationSerializer
+
+    def put(self, request, *args, **kwargs):
+        user = get_object_or_404(CustomerUser, id=kwargs.get('pk'))
+        serializer = UserInformationSerializer(user, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return JsonResponse({
+                'message': 'Update User successful!'
+            }, status=status.HTTP_200_OK)
+
+        return JsonResponse({
+            'message': 'Update User unsuccessful!'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, *args, **kwargs):
+        user = get_object_or_404(CustomerUser, id=kwargs.get('pk'))
+        user.delete()
+
+        return JsonResponse({
+            'message': 'Delete User successful!'
+        }, status=status.HTTP_200_OK)

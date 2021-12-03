@@ -15,5 +15,11 @@ Including another URLconf
 """
 from django.urls import path, include
 
+from cart.views import ListCreateCartAPIView, UpdateDeleteCartView
+
 urlpatterns = [
+    path('api/carts/<int:user_id>', ListCreateCartAPIView.as_view(), name='list_cart_user'),
+    path('api/carts/create', ListCreateCartAPIView.as_view(), name='create_cart'),
+    path('api/carts/update/<int:pk>', UpdateDeleteCartView.as_view(), name='update'),
+    path('api/carts/delete/<int:pk>', UpdateDeleteCartView.as_view(), name='delete'),
 ]

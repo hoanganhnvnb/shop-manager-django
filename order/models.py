@@ -9,5 +9,5 @@ class Order(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     description = models.TextField(default='')
     is_completed = models.BooleanField(default=False)
-
+    order_total = models.IntegerField(default=0)
 
