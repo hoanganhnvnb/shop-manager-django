@@ -11,7 +11,7 @@ class Cart(models.Model):
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.user
+        return str(self.user)
 
 
 class CartItems(models.Model):
@@ -21,4 +21,4 @@ class CartItems(models.Model):
     quantity = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.items.title
+        return str(self.items)

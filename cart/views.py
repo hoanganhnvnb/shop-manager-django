@@ -4,9 +4,12 @@ from django.shortcuts import render, get_object_or_404
 # Create your views here.
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from cart.models import Cart, CartItems
 from cart.serializers import CartSerializers, CartCreateSerializers, CartItemsSerializers
+from items.models import Items
 
 
 class ListCreateCartAPIView(ListCreateAPIView):
@@ -68,6 +71,16 @@ class UpdateDeleteCartView(RetrieveUpdateDestroyAPIView):
             'message': 'Delete Cart successful!'
         }, status=status.HTTP_200_OK)
 
+
+class ActiveCartAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        user_id = kwargs.get('user_id')
+        cart_queryset = Cart.objects.filter(user=user_id)
+        cart_active = cart_queryset.get(active=True)
+        data = CartSerializers(cart_active)
+        return Response(data=data.data, status=status.HTTP_200_OK)
+
+
 # CartItems
 class ListCreateCartItemsAPIView(ListCreateAPIView):
     model = CartItems
@@ -80,8 +93,32 @@ class ListCreateCartItemsAPIView(ListCreateAPIView):
         serializer = CartItemsSerializers(data=request.data)
 
         if serializer.is_valid():
-            serializer.save()
+            cart = serializer.validated_data.get('cart')
+            item = serializer.validated_data.get('items')
+            item_quantity = serializer.validated_data['quantity']
 
+            if not cart.active:
+                return JsonResponse({
+                    'message': 'Cart NOT ACTIVE'
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+            if item_quantity <= item.quantity:
+                cart_item = CartItems.objects.filter(cart=cart, items=item)
+
+                if cart_item:
+                    cart_item = cart_item.first()
+                    cart_item.quantity = cart_item.quantity + item_quantity
+                    item.quantity = item.quantity - item_quantity
+                    item.save()
+                    cart_item.save()
+                else:
+                    item.quantity = item.quantity - item_quantity
+                    item.save()
+                    serializer.save()
+            else:
+                return JsonResponse({
+                    'message': 'The quantity of items is NOT ENOUGH!'
+                }, status=status.HTTP_400_BAD_REQUEST)
             return JsonResponse({
                 'message': 'Create a new CartItems successful!'
             }, status=status.HTTP_201_CREATED)
@@ -91,12 +128,12 @@ class ListCreateCartItemsAPIView(ListCreateAPIView):
         }, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UpdateDeleteCartView(RetrieveUpdateDestroyAPIView):
+class UpdateDeleteCartItemsView(RetrieveUpdateDestroyAPIView):
     model = CartItems
     serializer_class = CartItemsSerializers
 
     def put(self, request, *args, **kwargs):
-        cart_items = get_object_or_404(Cart, id=kwargs.get('pk'))
+        cart_items = get_object_or_404(CartItems, id=kwargs.get('pk'))
         serializer = CartItemsSerializers(cart_items, data=request.data)
 
         if serializer.is_valid():
@@ -117,4 +154,3 @@ class UpdateDeleteCartView(RetrieveUpdateDestroyAPIView):
         return JsonResponse({
             'message': 'Delete CartItems successful!'
         }, status=status.HTTP_200_OK)
-

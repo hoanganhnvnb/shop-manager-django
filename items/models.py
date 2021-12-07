@@ -4,11 +4,11 @@ from category.models import Category
 # Create your models here.
 
 class Items(models.Model):
-    barcode = models.CharField(max_length=48)
+    barcode = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=255)
     description = models.TextField(default='')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    # image = models.ImageField()
+    image = models.ImageField(null=True)
 
     importPrice = models.IntegerField(default=0)
     sellPrice = models.IntegerField(default=0)
@@ -20,7 +20,7 @@ class Items(models.Model):
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.title
+        return str(self.title)
 
 # class ItemsCategory(models.Model):
 #     items = models.ForeignKey(Items)
