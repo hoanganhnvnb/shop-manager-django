@@ -1,1 +1,1 @@
-web: gunicorn yourdjangoweb.wsgi --log-file -
+web: gunicorn shopuet.wsgi --log-file -
