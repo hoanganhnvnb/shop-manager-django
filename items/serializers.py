@@ -9,13 +9,13 @@ class ItemsSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Items
-        fields = ('barcode', 'title', 'description', 'category', 'image'
+        fields = ('id', 'barcode', 'title', 'description', 'category', 'image'
                   , 'importPrice', 'sellPrice', 'quantity', 'companyName', 'active')
 
 class ItemsCreateSerializers(serializers.ModelSerializer):
     class Meta:
         model = Items
-        fields = ('barcode', 'title', 'description', 'category', 'image'
+        fields = ('id', 'barcode', 'title', 'description', 'category', 'image'
                   , 'importPrice', 'sellPrice', 'quantity', 'companyName', 'active')
 
 class ItemsAddQuantitySerializer(serializers.ModelSerializer):

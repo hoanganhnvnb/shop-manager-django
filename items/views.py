@@ -35,7 +35,7 @@ class UpdateDeleteItemsView(RetrieveUpdateDestroyAPIView):
     serializer_class = ItemsSerializers
 
     def put(self, request, *args, **kwargs):
-        item = get_object_or_404(Items, barcode=kwargs.get('pk'))
+        item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
         serializer = ItemsCreateSerializers(item, data=request.data)
 
         if serializer.is_valid():
@@ -50,7 +50,7 @@ class UpdateDeleteItemsView(RetrieveUpdateDestroyAPIView):
         }, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, *args, **kwargs):
-        item = get_object_or_404(Items, barcode=kwargs.get('pk'))
+        item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
         item.delete()
 
         return JsonResponse({
@@ -63,7 +63,7 @@ class AddQuantityItemsView(RetrieveUpdateDestroyAPIView):
     serializer_class = ItemsAddQuantitySerializer
 
     def put(self, request, *args, **kwargs):
-        item = get_object_or_404(Items, barcode=kwargs.get('pk'))
+        item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
         serializer = ItemsAddQuantitySerializer(item, data=request.data)
 
         if serializer.is_valid():
@@ -84,7 +84,7 @@ class AddImageItemsView(RetrieveUpdateDestroyAPIView):
     serializer_class = ItemsImageSerializer
 
     def put(self, request, *args, **kwargs):
-        item = get_object_or_404(Items, barcode=kwargs.get('pk'))
+        item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
         serializer = ItemsImageSerializer(item, data=request.data)
 
         if serializer.is_valid():

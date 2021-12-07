@@ -4,7 +4,7 @@ from category.models import Category
 # Create your models here.
 
 class Items(models.Model):
-    barcode = models.IntegerField(primary_key=True)
+    barcode = models.IntegerField(unique=True)
     title = models.CharField(max_length=255)
     description = models.TextField(default='')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
