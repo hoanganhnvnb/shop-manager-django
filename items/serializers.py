@@ -5,7 +5,6 @@ from .models import Items
 
 
 class ItemsSerializers(serializers.ModelSerializer):
-    category = CategoryCreateSerializers()
 
     class Meta:
         model = Items
