@@ -28,7 +28,7 @@ SECRET_KEY = '&mu+19$47_ixb!hjazn*(kymlc3+hb7rj*3jj%l7=9z++*1**w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['shopuet.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['shopuet.herokuapp.com']
 
 
 # Application definition
