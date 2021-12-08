@@ -28,7 +28,7 @@ SECRET_KEY = '&mu+19$47_ixb!hjazn*(kymlc3+hb7rj*3jj%l7=9z++*1**w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['shopuet.herokuapp.com']
+ALLOWED_HOSTS = ['shopuet.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -77,17 +77,6 @@ SIMPLE_JWT = {
     'VERIFYING_KEY': None,
 
     'AUTH_HEADER_TYPES': ('Bearer',),
-    'USER_ID_FIELD': 'id',
-    'USER_ID_CLAIM': 'user_id',
-
-    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-    'TOKEN_TYPE_CLAIM': 'token_type',
-
-    'JTI_CLAIM': 'jti',
-
-    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
-    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
 
