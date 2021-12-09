@@ -36,7 +36,7 @@ class UserRegisterAPIView(APIView):
 class UserInformationAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
-        user = get_object_or_404(CustomerUser, pk=kwargs.get('pk'))
+        user = CustomerUser.objects.get(id=kwargs.get('pk'))
         data = UserInformationAPIView(user)
         return Response(data=data.data, status=status.HTTP_200_OK)
 
