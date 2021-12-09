@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.response import Response
 
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -34,12 +35,10 @@ class UserRegisterAPIView(APIView):
 
 class UserInformationAPIView(APIView):
 
-    permission_classes = (IsAuthenticated, )
-
-    def get(self, request):
-        return JsonResponse({
-            "msg": "succeed"
-        }, status=status.HTTP_200_OK)
+    def get(self, request, *args, **kwargs):
+        user = get_object_or_404(CustomerUser, pk=kwargs.get('pk'))
+        data = UserInformationAPIView(user)
+        return Response(data=data.data, status=status.HTTP_200_OK)
 
 class ListCreateUserAPIView(ListCreateAPIView):
     model = CustomerUser
