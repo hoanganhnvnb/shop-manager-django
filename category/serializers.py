@@ -7,10 +7,10 @@ class CategorySerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('id', 'title', 'slug', 'description', 'active')
+        fields = ('id', 'title', 'slug', 'description', 'active', 'image')
 
 class CategoryCreateSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('id', 'title', 'description', 'active')
+        fields = ('id', 'title', 'description', 'active', 'image')
