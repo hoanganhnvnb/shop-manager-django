@@ -106,3 +106,12 @@ class GetItemAPIView(APIView):
         item = Items.objects.get(barcode=kwargs.get('barcode'))
         data = ItemsSerializers(item)
         return Response(data=data.data, status=status.HTTP_200_OK)
+    
+class ListPopularItemsAPIView(ListCreateAPIView):
+    model = Items
+    serializer_class = ItemsSerializers
+
+    def get_queryset(self):
+        item_queryset = Items.objects.all().order_by('-quantity_sold')[:10]
+        
+        return item_queryset
