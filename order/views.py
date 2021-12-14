@@ -6,9 +6,10 @@ from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.views import APIView
 
-from cart.models import CartItems
+from cart.models import Cart, CartItems
+from items.models import Items
 from order.models import Order
-from order.serializer import OrderSerializer, OrderSimpleSerializer
+from order.serializer import OrderSerializer, OrderSimpleSerializer, OrderPaidSerializer
 
 
 class ListCreateOrderAPIView(ListCreateAPIView):
@@ -87,3 +88,46 @@ class UpdateTotalOrderAPIView(APIView):
         return JsonResponse({
             'message': 'update order total price Items successful!'
         }, status=status.HTTP_200_OK)
+        
+class OrderPaidAPIView(RetrieveUpdateDestroyAPIView):
+    model = Order
+    serializer_class = OrderPaidSerializer
+    
+    def put(self, request, *args, **kwargs):
+        order = get_object_or_404(Order, pk=kwargs.get('pk'))
+        serializer = OrderPaidSerializer(order, data=request.data)
+
+        if serializer.is_valid():
+            if not order.is_completed:
+                order.is_completed = True
+                cart_items = CartItems.objects.filter(cart=order.cart)
+                
+                order_total = 0
+                if cart_items:
+                    for cart_item in cart_items:
+                        item = Items.objects.get(pk=cart_item.items)
+                        quantity_to_buy = cart_item.quantity
+                        
+                        total_price_item = item.sellPrice * quantity_to_buy
+                        order_total = order_total + total_price_item
+                        
+                        item.quantity = item.quantity - quantity_to_buy
+                        item.quantity_sold = item.quantity_sold + quantity_to_buy
+                        item.save()
+                    order.order_total = order_total
+                    order.save()
+                else:
+                    return JsonResponse({
+                        'message': 'Paid Order: Cart is empty!'
+                    }, status=status.HTTP_400_BAD_REQUEST)
+                    
+
+            return JsonResponse({
+                'message': 'Paid Order successful!'
+            }, status=status.HTTP_200_OK)
+
+        return JsonResponse({
+            'message': 'Paid Items unsuccessful!'
+        }, status=status.HTTP_400_BAD_REQUEST)
+    
+        

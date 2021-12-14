@@ -1,3 +1,5 @@
+from django.db import models
+from django.db.models import fields
 from rest_framework import serializers
 
 from .models import Order
@@ -14,3 +16,9 @@ class OrderSimpleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ('id', 'user', 'cart', 'description', 'is_completed', 'order_total')
+        
+class OrderPaidSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        models = Order
+        fields = ('is_completed')

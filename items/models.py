@@ -18,6 +18,8 @@ class Items(models.Model):
     companyName = models.CharField(max_length=50)
 
     active = models.BooleanField(default=True)
+    
+    quantity_sold = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.title)

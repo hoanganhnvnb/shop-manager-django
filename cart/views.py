@@ -108,12 +108,8 @@ class ListCreateCartItemsAPIView(ListCreateAPIView):
                 if cart_item:
                     cart_item = cart_item.first()
                     cart_item.quantity = cart_item.quantity + item_quantity
-                    item.quantity = item.quantity - item_quantity
-                    item.save()
                     cart_item.save()
                 else:
-                    item.quantity = item.quantity - item_quantity
-                    item.save()
                     serializer.save()
             else:
                 return JsonResponse({

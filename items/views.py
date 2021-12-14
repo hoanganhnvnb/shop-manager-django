@@ -4,6 +4,8 @@ from django.shortcuts import render, get_object_or_404
 # Create your views here.
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from items.models import Items
 from items.serializers import ItemsSerializers, ItemsCreateSerializers, ItemsAddQuantitySerializer, ItemsImageSerializer
@@ -97,3 +99,10 @@ class AddImageItemsView(RetrieveUpdateDestroyAPIView):
         return JsonResponse({
             'message': 'Add Image of Items unsuccessful!'
         }, status=status.HTTP_400_BAD_REQUEST)
+        
+class GetItemAPIView(APIView):
+    
+    def get(self, request, *args, **kwargs):
+        item = Items.objects.get(barcode=kwargs.get('barcode'))
+        data = ItemsSerializers(item)
+        return Response(data=data.data, status=status.HTTP_200_OK)
