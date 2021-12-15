@@ -35,7 +35,7 @@ class UserRegisterAPIView(APIView):
 
 class UserInformationAPIView(APIView):
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         if request.user.is_authenticated:
             user = request.user
         else:
