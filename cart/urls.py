@@ -22,7 +22,7 @@ urlpatterns = [
     path('api/carts', ListCreateCartAPIView.as_view(), name='list_create'),
     path('api/carts/update/<int:pk>', UpdateDeleteCartView.as_view(), name='update'),
     path('api/carts/delete/<int:pk>', UpdateDeleteCartView.as_view(), name='delete'),
-    path('api/carts/cart_active/<int:user_id>', ActiveCartAPIView.as_view()),
+    path('api/carts/cart_active', ActiveCartAPIView.as_view()),
 
     path('api/cart_items', ListCreateCartItemsAPIView.as_view(), name="list_create_ci"),
     path('api/cart_items/<int:pk>', UpdateDeleteCartItemsView.as_view()),
