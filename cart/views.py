@@ -25,7 +25,7 @@ class ListCreateCartAPIView(ListCreateAPIView):
         else:
             return JsonResponse({
                 'message': 'Not Authenticated!'
-            }, status=status.HTTP_400_BAD_REQUEST)
+            }, status=status.HTTP_401_UNAUTHORIZED)
 
         try:
             cart_queryset = Cart.objects.filter(user=user)
@@ -37,15 +37,11 @@ class ListCreateCartAPIView(ListCreateAPIView):
         if have_active_cart:
             active_cart.active = False
             active_cart.save()
-            cart = Cart(user=user)
-            cart.save()
-        else:
-            cart = Cart(user=user)
-            cart.save()
 
-        return JsonResponse({
-            'message': 'Create a new Cart successful!'
-        }, status=status.HTTP_201_CREATED)
+        cart = Cart(user=user)
+        cart.save()
+        data = CartSerializers(cart)
+        return Response(data=data.data, status=status.HTTP_200_OK)
 
 
 class UpdateDeleteCartView(RetrieveUpdateDestroyAPIView):
@@ -83,7 +79,7 @@ class ActiveCartAPIView(APIView):
         else:
             return JsonResponse({
                 'message': 'Not Authenticated!'
-            }, status=status.HTTP_400_BAD_REQUEST)
+            }, status=status.HTTP_401_UNAUTHORIZED)
         cart_queryset = Cart.objects.filter(user=user)
         cart_active = cart_queryset.get(active=True)
         data = CartSerializers(cart_active)
