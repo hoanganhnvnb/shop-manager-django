@@ -20,28 +20,36 @@ class ListCreateCartAPIView(ListCreateAPIView):
         return Cart.objects.all()
 
     def create(self, request, *args, **kwargs):
-        serializer = CartCreateSerializers(data=request.data)
-
-        if serializer.is_valid():
-            user_id = serializer.validated_data['user']
-            try:
-                have_active_cart = True
-                cart_queryset = Cart.objects.filter(user=user_id)
-                active_cart = cart_queryset.get(active=True)
-            except Cart.DoesNotExist:
-                have_active_cart = False
-            if have_active_cart:
-                active_cart.active = False
-                active_cart.save()
-            serializer.save()
-
+        # serializer = CartCreateSerializers(data=request.data)
+        if request.user.is_authenticated:
+            user = request.user
+        else:
             return JsonResponse({
-                'message': 'Create a new Cart successful!'
-            }, status=status.HTTP_201_CREATED)
+                'message': 'Not Authenticated!'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # if serializer.is_valid():
+        try:
+            have_active_cart = True
+            cart_queryset = Cart.objects.filter(user=user)
+            active_cart = cart_queryset.get(active=True)
+        except Cart.DoesNotExist:
+            have_active_cart = False
+
+        if have_active_cart:
+            active_cart.active = False
+            active_cart.save()
+        else:
+            cart = Cart(user=user)
+            cart.save()
 
         return JsonResponse({
-            'message': 'Create a new Cart unsuccessful!'
-        }, status=status.HTTP_400_BAD_REQUEST)
+            'message': 'Create a new Cart successful!'
+        }, status=status.HTTP_201_CREATED)
+        #
+        # return JsonResponse({
+        #     'message': 'Create a new Cart unsuccessful!'
+        # }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UpdateDeleteCartView(RetrieveUpdateDestroyAPIView):
