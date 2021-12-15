@@ -23,7 +23,12 @@ class ListCreateOrderAPIView(ListCreateAPIView):
         serializer = OrderSimpleSerializer(data=request.data)
 
         if serializer.is_valid():
-            user = serializer.validated_data.get('user')
+            if request.user.is_authenticated:
+                user = request.user
+            else:
+                return JsonResponse({
+                    'message': 'Not Authenticated!'
+                }, status=status.HTTP_400_BAD_REQUEST)
             cart = serializer.validated_data.get('cart')
 
             cart_items = CartItems.objects.filter(cart=cart)

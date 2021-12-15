@@ -36,7 +36,12 @@ class UserRegisterAPIView(APIView):
 class UserInformationAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
-        user = CustomerUser.objects.get(id=kwargs.get('pk'))
+        if request.user.is_authenticated:
+            user = request.user
+        else:
+            return JsonResponse({
+                'message': 'Not Authenticated!'
+            }, status=status.HTTP_400_BAD_REQUEST)
         data = UserInformationAPIView(user)
         return Response(data=data.data, status=status.HTTP_200_OK)
 

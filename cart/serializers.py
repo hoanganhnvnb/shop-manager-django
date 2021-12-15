@@ -5,7 +5,6 @@ from user.serializers import SimpleUserSerializer
 
 
 class CartSerializers(serializers.ModelSerializer):
-    user = SimpleUserSerializer()
 
     class Meta:
         model = Cart

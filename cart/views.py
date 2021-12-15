@@ -20,7 +20,6 @@ class ListCreateCartAPIView(ListCreateAPIView):
         return Cart.objects.all()
 
     def create(self, request, *args, **kwargs):
-        # serializer = CartCreateSerializers(data=request.data)
         if request.user.is_authenticated:
             user = request.user
         else:
@@ -28,17 +27,18 @@ class ListCreateCartAPIView(ListCreateAPIView):
                 'message': 'Not Authenticated!'
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        # if serializer.is_valid():
         try:
-            have_active_cart = True
             cart_queryset = Cart.objects.filter(user=user)
             active_cart = cart_queryset.get(active=True)
+            have_active_cart = True
         except Cart.DoesNotExist:
             have_active_cart = False
 
         if have_active_cart:
             active_cart.active = False
             active_cart.save()
+            cart = Cart(user=user)
+            cart.save()
         else:
             cart = Cart(user=user)
             cart.save()
@@ -46,10 +46,6 @@ class ListCreateCartAPIView(ListCreateAPIView):
         return JsonResponse({
             'message': 'Create a new Cart successful!'
         }, status=status.HTTP_201_CREATED)
-        #
-        # return JsonResponse({
-        #     'message': 'Create a new Cart unsuccessful!'
-        # }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UpdateDeleteCartView(RetrieveUpdateDestroyAPIView):
@@ -82,8 +78,13 @@ class UpdateDeleteCartView(RetrieveUpdateDestroyAPIView):
 
 class ActiveCartAPIView(APIView):
     def get(self, request, *args, **kwargs):
-        user_id = kwargs.get('user_id')
-        cart_queryset = Cart.objects.filter(user=user_id)
+        if request.user.is_authenticated:
+            user = request.user
+        else:
+            return JsonResponse({
+                'message': 'Not Authenticated!'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        cart_queryset = Cart.objects.filter(user=user)
         cart_active = cart_queryset.get(active=True)
         data = CartSerializers(cart_active)
         return Response(data=data.data, status=status.HTTP_200_OK)
