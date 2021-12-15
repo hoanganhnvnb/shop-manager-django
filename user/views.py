@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 
 from .models import CustomerUser
-from .serializers import UserSerializer, UserInformationSerializer
+from .serializers import UserSerializer, UserInformationSerializer, SimpleUserSerializer
 
 
 # Create your views here.
@@ -42,7 +42,7 @@ class UserInformationAPIView(APIView):
             return JsonResponse({
                 'message': 'Not Authenticated!'
             }, status=status.HTTP_400_BAD_REQUEST)
-        data = UserInformationAPIView(user)
+        data = SimpleUserSerializer(user)
         return Response(data=data.data, status=status.HTTP_200_OK)
 
 class ListCreateUserAPIView(ListCreateAPIView):
