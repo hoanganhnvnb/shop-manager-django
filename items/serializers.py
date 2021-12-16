@@ -13,7 +13,9 @@ class ItemsSerializers(serializers.ModelSerializer):
                   , 'importPrice', 'sellPrice', 'quantity', 'companyName', 'active', 'quantity_sold')
         
     def get_image(self, items):
-        return items.image.url
+        request = self.context.get('request')
+        photo_url = items.image.url
+        return request.build_absolute_uri(photo_url)
 
 class ItemsCreateSerializers(serializers.ModelSerializer):
     class Meta:
