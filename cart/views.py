@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from cart.models import Cart, CartItems
-from cart.serializers import CartSerializers, CartCreateSerializers, CartItemsSerializers
+from cart.serializers import CartSerializers, CartCreateSerializers, CartItemsSerializers, GetCartItemsSerializers
 from items.models import Items
 
 
@@ -162,5 +162,5 @@ class GetAllItemsInCartAPIView(APIView):
     def get(self, request, *args, **kwargs):
         cart_id = kwargs.get('cart_id')
         cartItems = CartItems.objects.all().filter(cart=cart_id)
-        data = CartItemsSerializers(cartItems, many=True)
+        data = GetCartItemsSerializers(cartItems, many=True)
         return Response(data=data.data, status=status.HTTP_200_OK)
