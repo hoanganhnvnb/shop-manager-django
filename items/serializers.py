@@ -5,7 +5,7 @@ from .models import Items
 
 
 class ItemsSerializers(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField('get_image')
 
     class Meta:
         model = Items
@@ -13,9 +13,7 @@ class ItemsSerializers(serializers.ModelSerializer):
                   , 'importPrice', 'sellPrice', 'quantity', 'companyName', 'active', 'quantity_sold')
         
     def get_image(self, items):
-        request = self.context.get('request')
-        photo_url = items.image.url
-        return request.build_absolute_uri(photo_url)
+        return items.image.url
 
 class ItemsCreateSerializers(serializers.ModelSerializer):
     class Meta:
