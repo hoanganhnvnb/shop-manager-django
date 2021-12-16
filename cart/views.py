@@ -155,3 +155,12 @@ class UpdateDeleteCartItemsView(RetrieveUpdateDestroyAPIView):
         return JsonResponse({
             'message': 'Delete CartItems successful!'
         }, status=status.HTTP_200_OK)
+
+
+class GetAllItemsInCartAPIView(APIView):
+    
+    def get(self, request, *args, **kwargs):
+        cart_id = kwargs.get('cart_id')
+        cartItems = CartItems.objects.all().filter(cart=cart_id)
+        data = CartItemsSerializers(cartItems, many=True)
+        return Response(data=data.data, status=status.HTTP_200_OK)
