@@ -103,8 +103,11 @@ class AddImageItemsView(RetrieveUpdateDestroyAPIView):
 class GetItemAPIView(APIView):
     
     def get(self, request, *args, **kwargs):
-        item = Items.objects.get(barcode=kwargs.get('barcode'))
-        data = ItemsSerializers(item)
+        try:
+            item = Items.objects.get(barcode=kwargs.get('barcode'))
+            data = ItemsSerializers(item)
+        except:
+            return JsonResponse({'message': 'Khong thay hang nay trong kho' }, status=status.HTTP_400_BAD_REQUEST)
         return Response(data=data.data, status=status.HTTP_200_OK)
     
 class ListPopularItemsAPIView(ListCreateAPIView):
