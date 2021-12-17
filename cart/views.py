@@ -80,8 +80,8 @@ class ActiveCartAPIView(APIView):
             return JsonResponse({
                 'message': 'Not Authenticated!'
             }, status=status.HTTP_401_UNAUTHORIZED)
-        cart_queryset = Cart.objects.filter(user=user)
         try:
+            cart_queryset = Cart.objects.filter(user=user)
             cart_active = cart_queryset.get(active=True)
         except:
             return JsonResponse({'message': 'Not Have Active Cart!'}, status=status.HTTP_200_OK)
