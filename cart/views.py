@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
+from django.utils.translation import activate
 
 # Create your views here.
 from rest_framework import status
@@ -84,7 +85,8 @@ class ActiveCartAPIView(APIView):
             cart_queryset = Cart.objects.filter(user=user)
             cart_active = cart_queryset.get(active=True)
         except:
-            return JsonResponse({'message': 'Not Have Active Cart!'}, status=status.HTTP_200_OK)
+            cart_active = Cart(user=user, active=True)
+            cart_active.save()
         
         data = CartSerializers(cart_active)
         return Response(data=data.data, status=status.HTTP_200_OK)
