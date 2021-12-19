@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 import FCMManager as fcm
 
 from .models import CustomerUser
-from .serializers import UserSerializer, UserInformationSerializer, SimpleUserSerializer
+from .serializers import UserSerializer, UserInformationSerializer, SimpleUserSerializer, UpdateLocalTokenUserSerializer
 
 
 # Create your views here.
@@ -98,3 +98,21 @@ class UpdateDeleteUserView(RetrieveUpdateDestroyAPIView):
         return JsonResponse({
             'message': 'Delete User successful!'
         }, status=status.HTTP_200_OK)
+        
+class UpdateTokenUserView(RetrieveUpdateDestroyAPIView):
+    model = CustomerUser
+    serializer_class = UpdateLocalTokenUserSerializer
+
+    def put(self, request, *args, **kwargs):
+        user = get_object_or_404(CustomerUser, id=kwargs.get('pk'))
+        serializer = UpdateLocalTokenUserSerializer(user, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            data = SimpleUserSerializer(data=user)
+            return Response(data=data.data, status=status.HTTP_200_OK)
+
+        return JsonResponse({
+            'message': 'Update new Token unsuccessful!'
+        }, status=status.HTTP_400_BAD_REQUEST)

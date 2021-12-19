@@ -22,3 +22,9 @@ class SimpleUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerUser
         fields = ('id', 'username', 'email', 'first_name', 'last_name', 'is_superuser')
+        
+class UpdateLocalTokenUserSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = CustomerUser
+        fields = ('token', )
