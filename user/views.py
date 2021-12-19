@@ -8,6 +8,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 
+import FCMManager as fcm
+
 from .models import CustomerUser
 from .serializers import UserSerializer, UserInformationSerializer, SimpleUserSerializer
 
@@ -36,6 +38,9 @@ class UserRegisterAPIView(APIView):
 class UserInformationAPIView(APIView):
 
     def get(self, request):
+        
+        fcm.sendPush("Get Info", "Push from django ahihihihi", "flvYvodQRfqZPq0_8A3CWl:APA91bH5WtuJZaQZIfdbYcTeFfknlhejtKj_a-ohLIds5whKSo4LF6wNVQ4S0hvUV3AoEPJOF3JDbC05xBM6sbx-bbImOQccvwx9_bDzgwSDTiykln7JzjCA4tbU1oWfHl9bxe5MeZig")
+        
         if request.user.is_authenticated:
             user = request.user
         else:
