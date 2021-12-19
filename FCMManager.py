@@ -11,7 +11,7 @@ def sendPush(title, msg, registration_token, dataObject=None):
             body=msg
         ),
         data=dataObject,
-        token=registration_token,
+        tokens=registration_token,
     )
     
     response = messaging.send_multicast(message)
