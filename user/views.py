@@ -110,7 +110,7 @@ class UpdateTokenUserView(RetrieveUpdateDestroyAPIView):
         if serializer.is_valid():
             serializer.save()
 
-            data = SimpleUserSerializer(data=user)
+            data = SimpleUserSerializer(user)
             return Response(data=data.data, status=status.HTTP_200_OK)
 
         return JsonResponse({
