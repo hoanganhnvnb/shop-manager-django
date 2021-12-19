@@ -28,5 +28,5 @@ urlpatterns = [
     path('api/info', UserInformationAPIView.as_view(), name='info'),
     path('api/users', ListCreateUserAPIView.as_view(), name='create_list'),
     path('api/users/<int:pk>', UpdateDeleteUserView.as_view(), name='update_delete'),
-    path('api/device_token/<int:pk>', UpdateTokenUserView.as_view())
+    path('api/device_token', UpdateTokenUserView.as_view())
 ]

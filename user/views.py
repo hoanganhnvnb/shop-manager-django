@@ -104,7 +104,12 @@ class UpdateTokenUserView(RetrieveUpdateDestroyAPIView):
     serializer_class = UpdateLocalTokenUserSerializer
 
     def put(self, request, *args, **kwargs):
-        user = get_object_or_404(CustomerUser, id=kwargs.get('pk'))
+        if request.user.is_authenticated:
+            user = request.user
+        else:
+            return JsonResponse({
+                'message': 'Not Authenticated!'
+            }, status=status.HTTP_400_BAD_REQUEST)
         serializer = UpdateLocalTokenUserSerializer(user, data=request.data)
 
         if serializer.is_valid():
