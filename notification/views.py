@@ -71,6 +71,9 @@ class UpdateReadNotificationView(RetrieveUpdateDestroyAPIView):
         if serializer.is_valid():
             serializer.save()
 
+            noti.is_read = True;
+            noti.save()
+            
             return JsonResponse({
                 'message': 'Update Notification successful!'
             }, status=status.HTTP_200_OK)
