@@ -29,7 +29,6 @@ class ListCreateItemsAPIView(ListCreateAPIView):
             title_item = serializer.validated_data.get('title')
             serializer.save()
 
-            item_i = get_object_or_404(Items, id=serializer.validated_data.get('id'))
             title_noti = "Cửa hàng đã nhập hàng hóa mới"
             content_noti = title_item + " đã được cửa hàng nhập về."
             list_token = list()
@@ -41,10 +40,8 @@ class ListCreateItemsAPIView(ListCreateAPIView):
                     list_token.append(user.token)
             list_token = list(set(list_token))
             fcm.sendPush(title=title_noti, msg=content_noti, registration_token=list_token)
-
-            data = ItemsSerializers(item_i)
             
-            return Response(data=data.data, status=status.HTTP_201_CREATED)
+            return Response(data=request.data, status=status.HTTP_201_CREATED)
 
         return JsonResponse({
             'message': 'Create a new Items unsuccessful!'
