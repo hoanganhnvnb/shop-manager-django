@@ -9,6 +9,10 @@ from rest_framework.views import APIView
 
 from items.models import Items
 from items.serializers import ItemsSerializers, ItemsCreateSerializers, ItemsAddQuantitySerializer, ItemsImageSerializer
+from notification.models import Notification
+from user.models import CustomerUser
+
+import FCMManager as fcm
 
 
 class ListCreateItemsAPIView(ListCreateAPIView):
@@ -22,7 +26,20 @@ class ListCreateItemsAPIView(ListCreateAPIView):
         serializer = ItemsCreateSerializers(data=request.data)
 
         if serializer.is_valid():
+            title_item = serializer.validated_data.get('title')
             serializer.save()
+
+            title_noti = "Cửa hàng đã nhập hàng hóa mới"
+            content_noti = title_item + " đã được cửa hàng nhập về."
+            list_token = list()
+            list_customerUser = CustomerUser.objects.all().filter(is_superuser=False)
+            for user in list_customerUser:
+                noti = Notification(title=title_noti, content=content_noti, user=user)
+                noti.save()
+                if len(user.token) > 10:
+                    list_token.append(user.token)
+            list_token = list(set(list_token))
+            fcm.sendPush(title_noti=title_noti, msg=content_noti, registration_token=list_token)
 
             return JsonResponse({
                 'message': 'Create a new Items successful!'
