@@ -40,10 +40,10 @@ class ListCreateItemsAPIView(ListCreateAPIView):
                     list_token.append(user.token)
             list_token = list(set(list_token))
             fcm.sendPush(title=title_noti, msg=content_noti, registration_token=list_token)
-            
+
             return JsonResponse({
-            'message': 'Create a new Items successful!'
-        }, status=status.HTTP_201_CREATED)
+                'message': 'Create a new Items successful!'
+            }, status=status.HTTP_201_CREATED)
 
         return JsonResponse({
             'message': 'Create a new Items unsuccessful!'
