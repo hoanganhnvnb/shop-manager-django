@@ -25,7 +25,8 @@ urlpatterns = [
     path('category/', include('category.urls')),
     path('order/', include('order.urls')),
 
-    path('user/', include('user.urls'))
+    path('user/', include('user.urls')),
+    path('notification/', include('notification.urls')),
 ]
 
 if settings.DEBUG:
