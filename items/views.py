@@ -39,7 +39,7 @@ class ListCreateItemsAPIView(ListCreateAPIView):
                 if len(user.token) > 10:
                     list_token.append(user.token)
             list_token = list(set(list_token))
-            fcm.sendPush(title_noti=title_noti, msg=content_noti, registration_token=list_token)
+            fcm.sendPush(title=title_noti, msg=content_noti, registration_token=list_token)
 
             return JsonResponse({
                 'message': 'Create a new Items successful!'
