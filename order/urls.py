@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.urls import path, include
 
-from order.views import ListCreateOrderAPIView, UpdateDeleteOrderView, UpdateTotalOrderAPIView
+from order.views import ListCreateOrderAPIView, UpdateDeleteOrderView, UpdateTotalOrderAPIView, OrderPaidAPIView
 
 urlpatterns = [
     path('api/orders', ListCreateOrderAPIView.as_view(), name='list_create'),
     path('api/orders/<int:pk>', UpdateDeleteOrderView.as_view(), name='update_delete'),
-    path('api/orders/update_total/<int:pk>', UpdateTotalOrderAPIView.as_view(), name='total')
+    path('api/orders/update_total/<int:pk>', UpdateTotalOrderAPIView.as_view(), name='total'),
+    path('api/orders/paid/<int:pk>', OrderPaidAPIView.as_view(), name='paid')
 ]
