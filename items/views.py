@@ -98,11 +98,9 @@ class AddQuantityItemsView(RetrieveUpdateDestroyAPIView):
             'message': 'Add Quantity of Items unsuccessful!'
         }, status=status.HTTP_400_BAD_REQUEST)
 
-class AddImageItemsView(RetrieveUpdateDestroyAPIView):
-    model = Items
-    serializer_class = ItemsImageSerializer
-
-    def put(self, request, *args, **kwargs):
+class AddImageItemsView(APIView):
+    def post(self, request, *args, **kwargs):
+        
         item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
         serializer = ItemsImageSerializer(item, data=request.data)
 
