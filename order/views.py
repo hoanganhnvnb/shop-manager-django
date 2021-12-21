@@ -131,6 +131,8 @@ class OrderPaidAPIView(RetrieveUpdateDestroyAPIView):
                         item.save()
                     order.order_total = order_total
                     order.save()
+                    order.cart.active = False
+                    order.cart.save()
                 else:
                     return JsonResponse({
                         'message': 'Paid Order: Cart is empty!'
