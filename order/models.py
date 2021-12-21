@@ -10,4 +10,5 @@ class Order(models.Model):
     description = models.TextField(default='')
     is_completed = models.BooleanField(default=False)
     order_total = models.IntegerField(default=0)
+    create_at = models.DateTimeField(auto_now=True)
 
