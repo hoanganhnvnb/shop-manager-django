@@ -141,7 +141,7 @@ class OrderPaidAPIView(RetrieveUpdateDestroyAPIView):
                 for user in list_customerUser:
                     token = list()
                     title_noti = "User " + user_paid.username + "đã thanh toán!"
-                    content_noti = "User " + user_paid.username + "đã thanh toán thành công hóa đơn " + order.id
+                    content_noti = "User " + user_paid.username + "đã thanh toán thành công hóa đơn " + str(order.id)
                     noti = Notification(title=title_noti, content=content_noti, user=user)
                     noti.save()
                     if len(user.token) > 10:
@@ -149,7 +149,7 @@ class OrderPaidAPIView(RetrieveUpdateDestroyAPIView):
                         fcm.sendPush(title=title_noti, msg=content_noti, registration_token=token)
 
                 t_cus = "Bạn đã thanh toán thành công"
-                c_cus = "Bạn đã thanh toán thành công hóa đơn: " + order.id + " trị giá: " + order.order_total
+                c_cus = "Bạn đã thanh toán thành công hóa đơn: " + str(order.id) + " trị giá: " + str(order.order_total)
                 noti_cus = Notification(title=t_cus, content=c_cus, user=user_paid)
                 noti_cus.save()
                 if len(user_paid.token > 10):
