@@ -154,7 +154,7 @@ class OrderPaidAPIView(RetrieveUpdateDestroyAPIView):
                 c_cus = "Bạn đã thanh toán thành công hóa đơn: " + str(order.id) + " trị giá: " + str(order.order_total)
                 noti_cus = Notification(title=t_cus, content=c_cus, user=user_paid)
                 noti_cus.save()
-                if len(user_paid.token > 10):
+                if len(user_paid.token) > 10:
                     fcm.sendPush(title=t_cus, msg=c_cus, registration_token=list(user_paid.token))
 
                     
