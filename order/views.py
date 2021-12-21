@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.views import APIView
 
@@ -163,5 +164,19 @@ class OrderPaidAPIView(RetrieveUpdateDestroyAPIView):
         return JsonResponse({
             'message': 'Paid Items unsuccessful!'
         }, status=status.HTTP_400_BAD_REQUEST)
+        
+class GetOrderCompleteByUser(APIView):
+    def get(self, request):
+        if request.user.is_authenticated:
+            user_paid = request.user
+        else:
+            return JsonResponse({
+                'message': 'Not Authenticated!'
+            }, status=status.HTTP_401_UNAUTHORIZED)
+        
+        order_list = Order.objects.all().filter(user=user_paid, is_completed=True)
+        data = OrderSimpleSerializer(order_list, many=True)
+        return Response(data=data.data, status=status.HTTP_200_OK)
+        
     
         

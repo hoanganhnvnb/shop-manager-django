@@ -20,5 +20,5 @@ class OrderSimpleSerializer(serializers.ModelSerializer):
 class OrderPaidSerializer(serializers.ModelSerializer):
     
     class Meta:
-        models = Order
-        fields = ('is_completed')
+        model = Order
+        fields = ('is_completed', )
