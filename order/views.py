@@ -120,7 +120,7 @@ class OrderPaidAPIView(RetrieveUpdateDestroyAPIView):
                 order_total = 0
                 if cart_items:
                     for cart_item in cart_items:
-                        item = Items.objects.get(pk=cart_item.items)
+                        item = Items.objects.get(pk=cart_item.items.id)
                         quantity_to_buy = cart_item.quantity
                         
                         total_price_item = item.sellPrice * quantity_to_buy
