@@ -45,9 +45,7 @@ class ListCreateOrderAPIView(ListCreateAPIView):
 
             serializer.save()
 
-            return JsonResponse({
-                'message': 'Create a new Order successful!'
-            }, status=status.HTTP_201_CREATED)
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
         return JsonResponse({
             'message': 'Create a new Order unsuccessful!'
