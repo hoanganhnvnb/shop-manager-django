@@ -130,11 +130,8 @@ class GetItemAPIView(APIView):
             return JsonResponse({'message': 'Khong thay hang nay trong kho' }, status=status.HTTP_400_BAD_REQUEST)
         return Response(data=data.data, status=status.HTTP_200_OK)
     
-class ListPopularItemsAPIView(ListCreateAPIView):
-    model = Items
-    serializer_class = ItemsSerializers
-
-    def get_queryset(self):
+class ListPopularItemsAPIView(APIView):
+    def get(self):
         item_queryset = Items.objects.all().order_by('-quantity_sold')
-        
-        return item_queryset
+        data = ItemsSerializers(item_queryset, many=True)
+        return Response(data=data.data, status=status.HTTP_200_OK)
