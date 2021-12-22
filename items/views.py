@@ -1,3 +1,4 @@
+from django.db.models import query
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 
@@ -54,7 +55,7 @@ class UpdateDeleteItemsView(RetrieveUpdateDestroyAPIView):
     serializer_class = ItemsSerializers
 
     def put(self, request, *args, **kwargs):
-        item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
+        item = get_object_or_404(Items, barcode=kwargs.get('pk'))
         serializer = ItemsCreateSerializers(item, data=request.data)
 
         if serializer.is_valid():
@@ -69,12 +70,16 @@ class UpdateDeleteItemsView(RetrieveUpdateDestroyAPIView):
         }, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, *args, **kwargs):
-        item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
+        item = get_object_or_404(Items, barcode=kwargs.get('pk'))
         item.delete()
 
         return JsonResponse({
             'message': 'Delete Items successful!'
         }, status=status.HTTP_200_OK)
+        
+    def get_queryset(self):
+        queryset = ''
+        return queryset
 
 
 class AddQuantityItemsView(RetrieveUpdateDestroyAPIView):
@@ -82,7 +87,7 @@ class AddQuantityItemsView(RetrieveUpdateDestroyAPIView):
     serializer_class = ItemsAddQuantitySerializer
 
     def put(self, request, *args, **kwargs):
-        item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
+        item = get_object_or_404(Items, barcode=kwargs.get('pk'))
         serializer = ItemsAddQuantitySerializer(item, data=request.data)
 
         if serializer.is_valid():
@@ -101,7 +106,7 @@ class AddQuantityItemsView(RetrieveUpdateDestroyAPIView):
 class AddImageItemsView(APIView):
     def post(self, request, *args, **kwargs):
         
-        item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
+        item = get_object_or_404(Items, barcode=kwargs.get('pk'))
         serializer = ItemsImageSerializer(item, data=request.data)
 
         if serializer.is_valid():
@@ -119,17 +124,14 @@ class GetItemAPIView(APIView):
     
     def get(self, request, *args, **kwargs):
         try:
-            item = Items.objects.get(barcode=kwargs.get('barcode'))
+            item = Items.objects.get(barcode=kwargs.get('pk'))
             data = ItemsSerializers(item)
         except:
             return JsonResponse({'message': 'Khong thay hang nay trong kho' }, status=status.HTTP_400_BAD_REQUEST)
         return Response(data=data.data, status=status.HTTP_200_OK)
     
-class ListPopularItemsAPIView(ListCreateAPIView):
-    model = Items
-    serializer_class = ItemsSerializers
-
-    def get_queryset(self):
-        item_queryset = Items.objects.all().order_by('-quantity_sold')[:10]
-        
-        return item_queryset
+class ListPopularItemsAPIView(APIView):
+    def get(self):
+        item_queryset = Items.objects.all().order_by('-quantity_sold')
+        data = ItemsSerializers(item_queryset, many=True)
+        return Response(data=data.data, status=status.HTTP_200_OK)
