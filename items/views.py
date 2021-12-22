@@ -20,7 +20,7 @@ class ListCreateItemsAPIView(ListCreateAPIView):
     serializer_class = ItemsSerializers
 
     def get_queryset(self):
-        return Items.objects.all()
+        return Items.objects.all().order_by('-id')
 
     def create(self, request, *args, **kwargs):
         serializer = ItemsCreateSerializers(data=request.data)

@@ -174,7 +174,7 @@ class GetOrderCompleteByUser(APIView):
                 'message': 'Not Authenticated!'
             }, status=status.HTTP_401_UNAUTHORIZED)
         
-        order_list = Order.objects.all().filter(user=user_paid, is_completed=True)
+        order_list = Order.objects.all().filter(user=user_paid, is_completed=True).order_by('-create_at')
         data = OrderSimpleSerializer(order_list, many=True)
         return Response(data=data.data, status=status.HTTP_200_OK)
     

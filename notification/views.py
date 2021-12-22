@@ -92,7 +92,7 @@ class GetNotiByUserSerializer(APIView):
                 'message': 'Not Authenticated!'
             }, status=status.HTTP_401_UNAUTHORIZED)
 
-        list_noti = Notification.objects.all().filter(user=user)
+        list_noti = Notification.objects.all().filter(user=user).order_by('-id')
         data = NotificationSerializers(list_noti, many=True)
         return Response(data=data.data, status=status.HTTP_200_OK)
 
