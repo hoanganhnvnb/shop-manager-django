@@ -114,7 +114,7 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 DATABASES = {     
     'default': {         
         'ENGINE': 'django.db.backends.postgresql_psycopg2',         
-        'NAME': 'shopdb',         
+        'NAME': 'shopnew',         
         'USER': 'shopuser',         
         'PASSWORD': 'password',         
         'HOST': 'localhost',         
@@ -147,7 +147,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-# TIME_ZONE = 'UTC'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
