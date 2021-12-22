@@ -15,6 +15,7 @@ from notification.serializers import NotificationSerializers, NotificationReadSe
 class ListCreateNotificationAPIView(ListCreateAPIView):
     model = Notification
     serializer_class = NotificationSerializers
+    queryset = Notification.objects.all()
 
     def get_queryset(self):
         return Notification.objects.all()
