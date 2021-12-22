@@ -1,4 +1,3 @@
-from django.db.models.query import QuerySet
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 
@@ -33,9 +32,26 @@ class ListCreateNotificationAPIView(ListCreateAPIView):
             'message': 'Create a new Notification unsuccessful!'
         }, status=status.HTTP_400_BAD_REQUEST)
 
-class UpdateDeleteNotificationView(APIView):
+class UpdateDeleteNotificationView(RetrieveUpdateDestroyAPIView):
+    model = Notification
+    serializer_class = NotificationSerializers
 
-    def get(self, request, *args, **kwargs):
+    def put(self, request, *args, **kwargs):
+        category = get_object_or_404(Notification, id=kwargs.get('pk'))
+        serializer = NotificationSerializers(category, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return JsonResponse({
+                'message': 'Update Notification successful!'
+            }, status=status.HTTP_200_OK)
+
+        return JsonResponse({
+            'message': 'Update Notification unsuccessful!'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, *args, **kwargs):
         category = get_object_or_404(Notification, id=kwargs.get('pk'))
         category.delete()
 
