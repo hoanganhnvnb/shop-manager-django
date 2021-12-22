@@ -126,8 +126,8 @@ class GetItemAPIView(APIView):
         return Response(data=data.data, status=status.HTTP_200_OK)
     
 class ListPopularItemsAPIView(APIView):
-    def get(self, request):
-        
+    def get(self):
+        item_queryset = ''
         item_queryset = Items.objects.all().order_by('-quantity_sold')[:10]
         data = ItemsSerializers(item_queryset, many=True)
         return Response(data=data.data, status=status.HTTP_200_OK)
