@@ -11,7 +11,6 @@ from items.serializers import ItemsSerializers
 
 class GetItemsByTitle(APIView):
     def get(self, request, *args, **kwargs):
-        name
         search_text = kwargs.get('search_text')
         item_list = Items.objects.filter(title__unaccent__icontains=search_text)
         data = ItemsSerializers(item_list, many=True)
