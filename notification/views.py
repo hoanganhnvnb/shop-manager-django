@@ -1,3 +1,4 @@
+from django.db.models.query import QuerySet
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 
@@ -35,9 +36,7 @@ class ListCreateNotificationAPIView(ListCreateAPIView):
 class UpdateDeleteNotificationView(RetrieveUpdateDestroyAPIView):
     model = Notification
     serializer_class = NotificationSerializers
-    
-    def get_queryset(self):
-        return Notification.objects.all()
+    querySet = Notification.objects.all()
         
 
     def put(self, request, *args, **kwargs):
