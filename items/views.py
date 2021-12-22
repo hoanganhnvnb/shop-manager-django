@@ -1,3 +1,4 @@
+from django.db.models import query
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 
@@ -75,6 +76,10 @@ class UpdateDeleteItemsView(RetrieveUpdateDestroyAPIView):
         return JsonResponse({
             'message': 'Delete Items successful!'
         }, status=status.HTTP_200_OK)
+        
+    def get_queryset(self):
+        queryset = ''
+        return queryset
 
 
 class AddQuantityItemsView(RetrieveUpdateDestroyAPIView):
