@@ -35,6 +35,10 @@ class ListCreateNotificationAPIView(ListCreateAPIView):
 class UpdateDeleteNotificationView(RetrieveUpdateDestroyAPIView):
     model = Notification
     serializer_class = NotificationSerializers
+    
+    def get_queryset(self):
+        return Notification.objects.all()
+        
 
     def put(self, request, *args, **kwargs):
         category = get_object_or_404(Notification, id=kwargs.get('pk'))
