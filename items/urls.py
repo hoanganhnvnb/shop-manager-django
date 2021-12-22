@@ -19,7 +19,7 @@ from items.views import ListCreateItemsAPIView, UpdateDeleteItemsView, AddQuanti
 
 urlpatterns = [
     path('api/items', ListCreateItemsAPIView.as_view(), name='list_create'),
-    path('api/items/<slug:barcode>', UpdateDeleteItemsView.as_view(), name='update_delete'),
+    path('api/items/<slug:barcode>', UpdateDeleteItemsView.as_view(pk=1), name='update_delete'),
     path('api/items/add/<slug:barcode>', AddQuantityItemsView.as_view(), name='add_quantity'),
     path('api/items/add_image/<slug:barcode>', AddImageItemsView.as_view(), name='image'),
     path('api/items/get/<slug:barcode>', GetItemAPIView.as_view(), name='get'),
