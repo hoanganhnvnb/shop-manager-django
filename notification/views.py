@@ -37,6 +37,7 @@ class ListCreateNotificationAPIView(ListCreateAPIView):
 class UpdateDeleteNotificationView(RetrieveUpdateDestroyAPIView):
     model = Notification
     serializer_class = NotificationSerializers
+    queryset = Notification.objects.all()
     
     def get_queryset(self):
         queryset = ''
@@ -69,6 +70,7 @@ class UpdateDeleteNotificationView(RetrieveUpdateDestroyAPIView):
 class UpdateReadNotificationView(RetrieveUpdateDestroyAPIView):
     model = Notification
     serializer_class = NotificationReadSerializers
+    queryset = Notification.objects.all()
 
     def put(self, request, *args, **kwargs):
         noti = get_object_or_404(Notification, id=kwargs.get('pk'))
