@@ -36,7 +36,7 @@ class ListCreateNotificationAPIView(ListCreateAPIView):
 class UpdateDeleteNotificationView(RetrieveUpdateDestroyAPIView):
     model = Notification
     serializer_class = NotificationSerializers
-    querySet = Notification.objects.all()
+    queryset = Notification.objects.all()
         
 
     def put(self, request, *args, **kwargs):
