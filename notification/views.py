@@ -33,28 +33,9 @@ class ListCreateNotificationAPIView(ListCreateAPIView):
             'message': 'Create a new Notification unsuccessful!'
         }, status=status.HTTP_400_BAD_REQUEST)
 
-class UpdateDeleteNotificationView(RetrieveUpdateDestroyAPIView):
-    model = Notification
-    serializer_class = NotificationSerializers
-    queryset = ''
-        
+class UpdateDeleteNotificationView(APIView):
 
-    def put(self, request, *args, **kwargs):
-        category = get_object_or_404(Notification, id=kwargs.get('pk'))
-        serializer = NotificationSerializers(category, data=request.data)
-
-        if serializer.is_valid():
-            serializer.save()
-
-            return JsonResponse({
-                'message': 'Update Notification successful!'
-            }, status=status.HTTP_200_OK)
-
-        return JsonResponse({
-            'message': 'Update Notification unsuccessful!'
-        }, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         category = get_object_or_404(Notification, id=kwargs.get('pk'))
         category.delete()
 
