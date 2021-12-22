@@ -111,16 +111,16 @@ DATABASES = {
     }
 }
 
-DATABASES = {     
-    'default': {         
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',         
-        'NAME': 'shopdb',         
-        'USER': 'shopuser',         
-        'PASSWORD': 'password',         
-        'HOST': 'localhost',         
-        'PORT': '',     
-    } 
-}
+# DATABASES = {     
+#     'default': {         
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',         
+#         'NAME': 'shopdb',         
+#         'USER': 'shopuser',         
+#         'PASSWORD': 'password',         
+#         'HOST': 'localhost',         
+#         'PORT': '',     
+#     } 
+# }
 
 
 # Password validation
