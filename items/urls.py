@@ -19,9 +19,9 @@ from items.views import ListCreateItemsAPIView, UpdateDeleteItemsView, AddQuanti
 
 urlpatterns = [
     path('api/items', ListCreateItemsAPIView.as_view(), name='list_create'),
-    path('api/items/<slug:pk>', UpdateDeleteItemsView.as_view(), name='update_delete'),
-    path('api/items/add/<slug:pk>', AddQuantityItemsView.as_view(), name='add_quantity'),
-    path('api/items/add_image/<slug:pk>', AddImageItemsView.as_view(), name='image'),
-    path('api/items/get/<slug:pk>', GetItemAPIView.as_view(), name='get'),
+    path('api/items/<int:barcode>', UpdateDeleteItemsView.as_view(), name='update_delete'),
+    path('api/items/add/<int:barcode>', AddQuantityItemsView.as_view(), name='add_quantity'),
+    path('api/items/add_image/<int:barcode>', AddImageItemsView.as_view(), name='image'),
+    path('api/items/get/<int:barcode>', GetItemAPIView.as_view(), name='get'),
     path('api/items/popular', ListPopularItemsAPIView.as_view(), name='popular')
 ]
