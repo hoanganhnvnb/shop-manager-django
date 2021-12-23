@@ -9,6 +9,7 @@ from items.serializers import ItemsSerializers
 
 from django.db.models import CharField
 from django.db.models.functions import Lower
+from django.contrib.postgres.search import TrigramSimilarity
 
 CharField.register_lookup(Lower)
 
@@ -18,7 +19,10 @@ class GetItemsByTitle(APIView):
     def get(self, request, *args, **kwargs):
         search_text = kwargs.get('search_text')
         search_text = str(search_text)
-        item_list = Items.objects.filter(title__unaccent__lower__trigram_similar=search_text)
+        item_list = Items.objects.annotate(
+                similarity=TrigramSimilarity('name', search_text),
+            ).filter(similarity__gt=0.3).order_by('-similarity')
+        
         data = ItemsSerializers(item_list, many=True)
         return Response(data=data.data, status=status.HTTP_200_OK)
     
