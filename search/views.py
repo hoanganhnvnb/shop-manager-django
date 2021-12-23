@@ -7,6 +7,11 @@ from rest_framework.views import APIView
 from items.models import Items
 from items.serializers import ItemsSerializers
 
+from django.db.models import CharField
+from django.db.models.functions import Lower
+
+CharField.register_lookup(Lower)
+
 # Create your views here.
 
 class GetItemsByTitle(APIView):
