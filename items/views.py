@@ -53,6 +53,7 @@ class UpdateDeleteItemsView(RetrieveUpdateDestroyAPIView):
     model = Items
     serializer_class = ItemsSerializers
     queryset = Items.objects.all()
+    lookup_field = "barcode"
 
     def put(self, request, *args, **kwargs):
         item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
@@ -82,6 +83,7 @@ class AddQuantityItemsView(RetrieveUpdateDestroyAPIView):
     model = Items
     serializer_class = ItemsAddQuantitySerializer
     queryset = Items.objects.all()
+    lookup_field = "barcode"
 
     def put(self, request, *args, **kwargs):
         item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
