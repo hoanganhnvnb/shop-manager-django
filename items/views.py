@@ -136,6 +136,7 @@ class ListPopularItemsAPIView(ListCreateAPIView):
     model = Items
     serializer_class = ItemsSerializers
     lookup_field = "barcode"
+    queryset = Items.objects.all()
 
     def get_queryset(self):
         item_queryset = Items.objects.all().order_by('-quantity_sold')[:10]
