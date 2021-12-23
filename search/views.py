@@ -7,6 +7,10 @@ from rest_framework.views import APIView
 from items.models import Items
 from items.serializers import ItemsSerializers
 
+from django.db import connection
+with connection.cursor() as cursor:
+    cursor.execute('CREATE EXTENSION IF NOT EXISTS pg_trgm')
+
 from django.db.models import CharField
 from django.db.models.functions import Lower
 from django.contrib.postgres.search import TrigramSimilarity
