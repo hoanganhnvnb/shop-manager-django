@@ -20,7 +20,7 @@ class GetItemsByTitle(APIView):
         search_text = kwargs.get('search_text')
         search_text = str(search_text)
         item_list = Items.objects.annotate(
-                similarity=TrigramSimilarity('name', search_text),
+                similarity=TrigramSimilarity('title', search_text),
             ).filter(similarity__gt=0.3).order_by('-similarity')
         
         data = ItemsSerializers(item_list, many=True)
