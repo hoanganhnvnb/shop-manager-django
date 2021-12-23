@@ -5,7 +5,7 @@ from category.models import Category
 
 class Items(models.Model):
     barcode = models.BigIntegerField(unique=True)
-    title = models.TextField(default='')
+    title = models.CharField(max_length=255)
     description = models.TextField(default='')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     image = models.ImageField(null=True)
