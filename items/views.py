@@ -18,6 +18,7 @@ import FCMManager as fcm
 class ListCreateItemsAPIView(ListCreateAPIView):
     model = Items
     serializer_class = ItemsSerializers
+    lookup_field = "barcode"
 
     def get_queryset(self):
         return Items.objects.all().order_by('-id')
@@ -103,6 +104,7 @@ class AddQuantityItemsView(RetrieveUpdateDestroyAPIView):
         }, status=status.HTTP_400_BAD_REQUEST)
 
 class AddImageItemsView(APIView):
+    lookup_field = "barcode"
     def post(self, request, *args, **kwargs):
         
         item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
@@ -120,6 +122,7 @@ class AddImageItemsView(APIView):
         }, status=status.HTTP_400_BAD_REQUEST)
         
 class GetItemAPIView(APIView):
+    lookup_field = "barcode"
     
     def get(self, request, *args, **kwargs):
         try:
@@ -132,6 +135,7 @@ class GetItemAPIView(APIView):
 class ListPopularItemsAPIView(ListCreateAPIView):
     model = Items
     serializer_class = ItemsSerializers
+    lookup_field = "barcode"
 
     def get_queryset(self):
         item_queryset = Items.objects.all().order_by('-quantity_sold')[:10]
