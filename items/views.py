@@ -55,7 +55,7 @@ class UpdateDeleteItemsView(RetrieveUpdateDestroyAPIView):
     queryset = Items.objects.all()
     
     def get_object(self):
-        return self.request.user
+        return self.barcode
 
 
     def put(self, request, *args, **kwargs):
@@ -88,7 +88,7 @@ class AddQuantityItemsView(RetrieveUpdateDestroyAPIView):
     queryset = Items.objects.all()
     
     def get_object(self):
-        return self.request.user
+        return self.barcode
 
     def put(self, request, *args, **kwargs):
         item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
