@@ -52,6 +52,7 @@ class ListCreateItemsAPIView(ListCreateAPIView):
 class UpdateDeleteItemsView(RetrieveUpdateDestroyAPIView):
     model = Items
     serializer_class = ItemsSerializers
+    queryset = Items.objects.all()
 
     def put(self, request, *args, **kwargs):
         item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
@@ -80,6 +81,7 @@ class UpdateDeleteItemsView(RetrieveUpdateDestroyAPIView):
 class AddQuantityItemsView(RetrieveUpdateDestroyAPIView):
     model = Items
     serializer_class = ItemsAddQuantitySerializer
+    queryset = Items.objects.all()
 
     def put(self, request, *args, **kwargs):
         item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
