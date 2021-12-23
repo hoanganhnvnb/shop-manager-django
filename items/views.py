@@ -52,6 +52,11 @@ class ListCreateItemsAPIView(ListCreateAPIView):
 class UpdateDeleteItemsView(RetrieveUpdateDestroyAPIView):
     model = Items
     serializer_class = ItemsSerializers
+    queryset = Items.objects.all()
+    
+    def get_object(self):
+        return self.request.user
+
 
     def put(self, request, *args, **kwargs):
         item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
@@ -80,6 +85,10 @@ class UpdateDeleteItemsView(RetrieveUpdateDestroyAPIView):
 class AddQuantityItemsView(RetrieveUpdateDestroyAPIView):
     model = Items
     serializer_class = ItemsAddQuantitySerializer
+    queryset = Items.objects.all()
+    
+    def get_object(self):
+        return self.request.user
 
     def put(self, request, *args, **kwargs):
         item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
@@ -97,14 +106,6 @@ class AddQuantityItemsView(RetrieveUpdateDestroyAPIView):
         return JsonResponse({
             'message': 'Add Quantity of Items unsuccessful!'
         }, status=status.HTTP_400_BAD_REQUEST)
-    
-    def delete(self, request, *args, **kwargs):
-        item = get_object_or_404(Items, barcode=kwargs.get('barcode'))
-        item.delete()
-
-        return JsonResponse({
-            'message': 'Delete Items successful!'
-        }, status=status.HTTP_200_OK)
 
 class AddImageItemsView(APIView):
     def post(self, request, *args, **kwargs):
