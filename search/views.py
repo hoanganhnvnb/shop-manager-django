@@ -18,7 +18,7 @@ class GetItemsByTitle(APIView):
     def get(self, request, *args, **kwargs):
         search_text = kwargs.get('search_text')
         search_text = str(search_text)
-        item_list = Items.objects.filter(title__unaccent__lower__trigram_similar=search_text)
+        item_list = Items.objects.filter(title__name__unaccent__icontains=search_text)
         data = ItemsSerializers(item_list, many=True)
         return Response(data=data.data, status=status.HTTP_200_OK)
     
