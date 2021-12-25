@@ -13,7 +13,7 @@ with connection.cursor() as cursor:
 
 from django.db.models import CharField
 from django.db.models.functions import Lower
-from django.template.defaultfilters import slugify
+import base64
 from django.contrib.postgres.search import TrigramSimilarity
 
 CharField.register_lookup(Lower)
@@ -23,7 +23,7 @@ CharField.register_lookup(Lower)
 class GetItemsByTitle(APIView):
     def get(self, request, *args, **kwargs):
         search_text = kwargs.get('search_text')
-        search_text = slugify(search_text)
+        search_text = base64.urlsafe_b64decode(search_text)
         item_list = Items.objects.filter(title__unaccent__lower__trigram_similar=search_text)
         
         data = ItemsSerializers(item_list, many=True)
@@ -34,6 +34,7 @@ class GetItemsByTitle(APIView):
 class GetItemsByCompanyName(APIView):
     def get(self, request, *args, **kwargs):
         search_text = kwargs.get('search_text')
+        search_text = base64.urlsafe_b64decode(search_text)
         item_list = Items.objects.filter(companyName__unaccent__lower__trigram_similar=search_text)
         data = ItemsSerializers(item_list, many=True)
         return Response(data=data.data, status=status.HTTP_200_OK)
@@ -42,6 +43,7 @@ class GetItemsByCategoryTitle(APIView):
     
     def get(self, request, *args, **kwargs):
         search_text = kwargs.get('search_text')
+        search_text = base64.urlsafe_b64decode(search_text)
         item_list = Items.objects.filter(category__unaccent__lower__trigram_similar=search_text)
         data = ItemsSerializers(item_list, many=True)
         return Response(data=data.data, status=status.HTTP_200_OK)
