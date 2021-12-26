@@ -48,7 +48,7 @@ class GetItemsByTitle(APIView):
         serializer = SearchSerializer(data=request.data)
         if serializer.is_valid():
             search_text = serializer.validated_data.get('search_text')
-            search_text = no_accent_vietnamese(search_text)
+            # search_text = no_accent_vietnamese(search_text)
             item_list = Items.objects.filter(title__unaccent__icontains=search_text)
         
             data = ItemsSerializers(item_list, many=True)
@@ -61,7 +61,7 @@ class GetItemsByCompanyName(APIView):
         serializer = SearchSerializer(data=request.data)
         if serializer.is_valid():
             search_text = serializer.validated_data.get('search_text')
-            search_text = no_accent_vietnamese(search_text)
+            # search_text = no_accent_vietnamese(search_text)
             item_list = Items.objects.filter(companyName__unaccent__icontains=search_text)
             data = ItemsSerializers(item_list, many=True)
             return Response(data=data.data, status=status.HTTP_200_OK)
@@ -72,7 +72,7 @@ class GetItemsByCategoryTitle(APIView):
         serializer = SearchSerializer(data=request.data)
         if serializer.is_valid():
             search_text = serializer.validated_data.get('search_text')
-            search_text = no_accent_vietnamese(search_text)
+            # search_text = no_accent_vietnamese(search_text)
             print(search_text)
             item_list = Items.objects.filter(category__title__unaccent__icontains=search_text)
             data = ItemsSerializers(item_list, many=True)
