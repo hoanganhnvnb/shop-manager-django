@@ -136,7 +136,7 @@ class ListPopularItemsAPIView(ListCreateAPIView):
     
 class GetItemByCat(APIView):
     def get(self, request, *args, **kwargs):
-        item_queryset = Items.objects.all().filter(cart=kwargs.get('pk'))
+        item_queryset = Items.objects.all().filter(category=kwargs.get('pk'))
         
         data = ItemsSerializers(item_queryset, many=True)
         
