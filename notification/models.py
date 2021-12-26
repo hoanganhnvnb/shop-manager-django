@@ -14,7 +14,7 @@ class Notification(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.pk:
-            token = list()
+            token = []
             if len(self.user.token) > 10:
                 token.append(self.user.token)
                 fcm.sendPush(title=self.title, msg=self.content, registration_token=token, dataObject={
