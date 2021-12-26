@@ -136,22 +136,22 @@ class OrderPaidAPIView(RetrieveUpdateDestroyAPIView):
                         'message': 'Paid Order: Cart is empty!'
                     }, status=status.HTTP_400_BAD_REQUEST)
 
-                list_customerUser = CustomerUser.objects.all().filter(is_superuser=True)
+                # list_customerUser = CustomerUser.objects.all().filter(is_superuser=True)
 
-                for user in list_customerUser:
-                    token = list()
-                    title_noti = "Thu ngân " + user_paid.username + " đã thanh toán!"
-                    content_noti = "Thu ngân " + user_paid.username + " đã thanh toán thành công hóa đơn " + str(order.id) + " cho user " + ""
-                    noti = Notification(title=title_noti, content=content_noti, user=user)
-                    noti.save()
+                # for user in list_customerUser:
+                #     token = list()
+                #     title_noti = "Thu ngân " + user_paid.username + " đã thanh toán!"
+                #     content_noti = "Thu ngân " + user_paid.username + " đã thanh toán thành công hóa đơn " + str(order.id) + " cho user " + ""
+                #     noti = Notification(title=title_noti, content=content_noti, user=user)
+                #     noti.save()
                     # if len(user.token) > 10:
                     #     token.append(user.token)
                     #     fcm.sendPush(title=title_noti, msg=content_noti, registration_token=token)
 
-                t_cus = "Bạn đã thanh toán thành công"
-                c_cus = "Bạn đã thanh toán thành công hóa đơn: " + str(order.id) + " trị giá: " + str(order.order_total)
-                noti_cus = Notification(title=t_cus, content=c_cus, user=user_paid)
-                noti_cus.save()
+                # t_cus = "Bạn đã thanh toán thành công"
+                # c_cus = "Bạn đã thanh toán thành công hóa đơn: " + str(order.id) + " trị giá: " + str(order.order_total)
+                # noti_cus = Notification(title=t_cus, content=c_cus, user=user_paid)
+                # noti_cus.save()
                 # if len(user_paid.token) > 10:
                 #     fcm.sendPush(title=t_cus, msg=c_cus, registration_token=list(user_paid.token))
 
