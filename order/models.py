@@ -4,6 +4,7 @@ from user.models import CustomerUser
 from cart.models import Cart
 from notification.models import Notification
 from cart.models import CartItems
+from report.models import Report
 # Create your models here.
 
 class Order(models.Model):
@@ -33,10 +34,18 @@ class Order(models.Model):
         
         cart_items = CartItems.objects.filter(cart=self.cart)
         cash = 0
+        order_total = 0
         for cart_item in cart_items:
             total_price_cash = cart_item.items.importPrice * cart_item.quantity
-            cash = cash + total_price_cash 
-        self.cash = cash                
+            cash = cash + total_price_cash
+            total_price_item = cart_item.items.sellPrice * cart_item.quantity
+            order_total = order_total + total_price_item 
+        self.cash = cash        
+        self.order_total = order_total
+                
+        report = Report.objects.get(pk=1)
+        report.total_price_sell = report.total_price_sell + order_total
+        report.save()
         # This code only happens if the objects is
         # not in the database yet. Otherwise it would
         # have pk

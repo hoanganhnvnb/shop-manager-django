@@ -5,6 +5,7 @@ from category.models import Category
 import FCMManager as fcm
 from notification.models import Notification
 from user.models import CustomerUser
+from report.models import Report
 
 class Items(models.Model):
     barcode = models.BigIntegerField(unique=True)
@@ -52,6 +53,10 @@ class Items(models.Model):
         # This code only happens if the objects is
         # not in the database yet. Otherwise it would
         # have pk
+        report = Report.objects.get(pk=1)
+        report.total_price_import = report.total_price_import + self.importPrice * self.quantity
+        report.save()
+        
         super(Items, self).save(*args, **kwargs)
 
 # class ItemsCategory(models.Model):

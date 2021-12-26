@@ -33,15 +33,6 @@ class ListCreateOrderAPIView(ListCreateAPIView):
                 return JsonResponse({
                     'message': 'Not Authenticated!'
                 }, status=status.HTTP_400_BAD_REQUEST)
-            cart = serializer.validated_data.get('cart')
-
-            cart_items = CartItems.objects.filter(cart=cart)
-            order_total = 0
-            for cart_item in cart_items:
-                total_price_item = cart_item.items.sellPrice * cart_item.quantity
-                order_total = order_total + total_price_item
-
-            serializer.validated_data['order_total'] = order_total
 
             serializer.save()
 

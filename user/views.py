@@ -12,6 +12,7 @@ import FCMManager as fcm
 
 from .models import CustomerUser
 from .serializers import UserSerializer, UserInformationSerializer, SimpleUserSerializer, UpdateLocalTokenUserSerializer
+from report.models import Report
 
 
 # Create your views here.
@@ -61,6 +62,10 @@ class ListCreateUserAPIView(ListCreateAPIView):
         if serializer.is_valid():
             serializer.validated_data['password'] = make_password(serializer.validated_data['password'])
             serializer.save()
+            
+            report = Report.objects.get(pk=1)
+            report.new_cus = report.new_cus + 1
+            report.save()
 
             return JsonResponse({
                 'message': 'Create a new User successful!'
