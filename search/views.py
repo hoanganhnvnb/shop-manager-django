@@ -73,6 +73,7 @@ class GetItemsByCategoryTitle(APIView):
         message_bytes = base64.b64decode(search_text_bytes)
         search = message_bytes.decode('utf-8')
         search_text = no_accent_vietnamese(search)
+        print(search_text)
         item_list = Items.objects.filter(category__title__unaccent__icontains=search_text)
         data = ItemsSerializers(item_list, many=True)
         return Response(data=data.data, status=status.HTTP_200_OK)
