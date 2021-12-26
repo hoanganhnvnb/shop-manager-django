@@ -35,7 +35,7 @@ class GetItemsByCompanyName(APIView):
     def get(self, request, *args, **kwargs):
         search_text = kwargs.get('search_text')
         search_text = base64.b64decode(search_text)
-        item_list = Items.objects.filter(companyName____unaccent__icontains=search_text)
+        item_list = Items.objects.filter(companyName__unaccent__icontains=search_text)
         data = ItemsSerializers(item_list, many=True)
         return Response(data=data.data, status=status.HTTP_200_OK)
     
