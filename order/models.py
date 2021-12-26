@@ -3,6 +3,7 @@ from django.db import models
 from user.models import CustomerUser
 from cart.models import Cart
 from notification.models import Notification
+from cart.models import CartItems
 # Create your models here.
 
 class Order(models.Model):
@@ -12,6 +13,7 @@ class Order(models.Model):
     is_completed = models.BooleanField(default=False)
     order_total = models.IntegerField(default=0)
     create_at = models.DateTimeField(auto_now=True)
+    cash = models.IntegerField(default=0)
     
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -27,8 +29,14 @@ class Order(models.Model):
                 t_cus = "Bạn đã thanh toán thành công"
                 c_cus = "Bạn đã thanh toán thành công hóa đơn: " + str(self.pk) + " trị giá: " + str(self.order_total)
                 noti_cus = Notification(title=t_cus, content=c_cus, user=self.user)
-                noti_cus.save() 
-                    
+                noti_cus.save()
+        
+        cart_items = CartItems.objects.filter(cart=self.cart)
+        cash = 0
+        for cart_item in cart_items:
+            total_price_cash = cart_item.items.importPrice * cart_item.quantity
+            cash = cash + total_price_cash 
+        self.cash = cash                
         # This code only happens if the objects is
         # not in the database yet. Otherwise it would
         # have pk

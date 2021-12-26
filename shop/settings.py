@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'order',
     'user',
     'notification',
-    'search'
+    'search',
+    'report'
 ]
 
 MIDDLEWARE = [
