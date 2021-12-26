@@ -43,7 +43,7 @@ def no_accent_vietnamese(s):
     return s
 
 class GetItemsByTitle(APIView):
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         
         serializer = SearchSerializer(data=request.data)
         if serializer.is_valid():
@@ -57,7 +57,7 @@ class GetItemsByTitle(APIView):
 
         
 class GetItemsByCompanyName(APIView):
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         serializer = SearchSerializer(data=request.data)
         if serializer.is_valid():
             search_text = serializer.validated_data.get('search_text')
@@ -68,7 +68,7 @@ class GetItemsByCompanyName(APIView):
     
 class GetItemsByCategoryTitle(APIView):
     
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         serializer = SearchSerializer(data=request.data)
         if serializer.is_valid():
             search_text = serializer.validated_data.get('search_text')
