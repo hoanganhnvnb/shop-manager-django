@@ -17,10 +17,9 @@ class Notification(models.Model):
             token = list()
             if len(self.user.token) > 10:
                 token.append(self.user.token)
-                user = {
-                    "is_superuser": self.user.is_superuser
-                }
-                fcm.sendPush(title=self.title, msg=self.content, registration_token=token, dataObject=user)
+                fcm.sendPush(title=self.title, msg=self.content, registration_token=token, dataObject={
+                    "is_superuser": "self.user.is_superuser",
+                })
         # This code only happens if the objects is
         # not in the database yet. Otherwise it would
         # have pk
