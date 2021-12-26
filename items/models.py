@@ -35,6 +35,9 @@ class Items(models.Model):
                 content_noti = self.title + " đã được cửa hàng nhập về."
                 noti = Notification(title=title_noti, content=content_noti, user=user)
                 noti.save()
+                report = Report.objects.get(pk=1)
+                report.total_price_import = report.total_price_import + self.importPrice * self.quantity
+                report.save()
         else:
             if self.quantity <= 10:
                     for user in CustomerUser.objects.all().filter(is_superuser=True):
@@ -53,9 +56,6 @@ class Items(models.Model):
         # This code only happens if the objects is
         # not in the database yet. Otherwise it would
         # have pk
-        report = Report.objects.get(pk=1)
-        report.total_price_import = report.total_price_import + self.importPrice * self.quantity
-        report.save()
         
         super(Items, self).save(*args, **kwargs)
 
