@@ -13,7 +13,7 @@ from .serializers import ReportSerializer
 # Create your views here.
 
 class GetReport(APIView):
-    def get(self):
+    def get(self, request):
         report = Report.objects.get(pk=1)
         user_list = CustomerUser.objects.all().filter(is_superuser=True)
         report.count_nv = len(user_list)
