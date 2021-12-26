@@ -133,3 +133,11 @@ class ListPopularItemsAPIView(ListCreateAPIView):
         item_queryset = Items.objects.all().order_by('-quantity_sold')[:10]
         
         return item_queryset
+    
+class GetItemByCat(APIView):
+    def get(self, request, *args, **kwargs):
+        item_queryset = Items.objects.all().filter(cart=kwargs.get('pk'))
+        
+        data = ItemsSerializers(item_queryset, many=True)
+        
+        return Response(data=data.data, status=status.HTTP_200_OK)

@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import path, include
 
-from items.views import ListCreateItemsAPIView, UpdateDeleteItemsView, AddQuantityItemsView, AddImageItemsView, GetItemAPIView, ListPopularItemsAPIView
+from items.views import ListCreateItemsAPIView, UpdateDeleteItemsView, AddQuantityItemsView, AddImageItemsView, GetItemAPIView, ListPopularItemsAPIView, GetItemByCat
 
 urlpatterns = [
     path('api/items', ListCreateItemsAPIView.as_view(), name='list_create'),
@@ -23,5 +23,6 @@ urlpatterns = [
     path('api/items/add/<int:barcode>', AddQuantityItemsView.as_view(), name='add_quantity'),
     path('api/items/add_image/<int:barcode>', AddImageItemsView.as_view(), name='image'),
     path('api/items/get/<int:barcode>', GetItemAPIView.as_view(), name='get'),
-    path('api/items/popular', ListPopularItemsAPIView.as_view(), name='popular')
+    path('api/items/popular', ListPopularItemsAPIView.as_view(), name='popular'),
+    path('api/items/category/<int:pk>', GetItemByCat.as_view()),
 ]
