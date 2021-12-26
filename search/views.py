@@ -42,7 +42,7 @@ def no_accent_vietnamese(s):
 
 class GetItemsByTitle(APIView):
     def get(self, request, *args, **kwargs):
-        search_text = kwargs.get('search_text')
+        search_text = str(kwargs.get('search_text'))
         search_text = base64.b64decode(search_text)
         search_text = no_accent_vietnamese(search_text)
         item_list = Items.objects.filter(title__unaccent__icontains=search_text)
@@ -54,7 +54,7 @@ class GetItemsByTitle(APIView):
         
 class GetItemsByCompanyName(APIView):
     def get(self, request, *args, **kwargs):
-        search_text = kwargs.get('search_text')
+        search_text = str(kwargs.get('search_text'))
         search_text = base64.b64decode(search_text)
         search_text = no_accent_vietnamese(search_text)
         item_list = Items.objects.filter(companyName__unaccent__icontains=search_text)
@@ -64,7 +64,7 @@ class GetItemsByCompanyName(APIView):
 class GetItemsByCategoryTitle(APIView):
     
     def get(self, request, *args, **kwargs):
-        search_text = kwargs.get('search_text')
+        search_text = str(kwargs.get('search_text'))
         search_text = base64.b64decode(search_text)
         search_text = no_accent_vietnamese(search_text)
         item_list = Items.objects.filter(category__title__unaccent__icontains=search_text)
